@@ -19,7 +19,7 @@ async function bootstrap() {
 
   // log the service
   logger.log(
-    `API is running in : http://localhost:${appPort} or http://127.0.0.1:${appPort}`,
+    `API is running in : http://localhost:${appPort}/graphql or http://127.0.0.1:${appPort}/graphql`,
   );
 }
 

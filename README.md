@@ -140,6 +140,9 @@ mutation {
   
 - Sign Up (Email Available)
   ![signup-email-available](./docs/signup-email-available.png?raw=true "Sign Up Email Already Available")
+  
+- Database Demo
+  ![database-demo](./docs/db.png?raw=true "Database demo")
 
 ## License
 
