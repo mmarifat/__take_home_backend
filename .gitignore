@@ -36,3 +36,6 @@ lerna-debug.log*
 # package locks
 /yarn.lock
 /package-lock.json
+
+# graph ql schema
+/schema.gql
