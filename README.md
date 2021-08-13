@@ -1,27 +1,3 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
 Take Home API - backend starter package
@@ -29,9 +5,11 @@ Take Home API - backend starter package
 ## Used Tech's
 
 - Nest JS
-- MongoDb
+- Mongo
 - Bcrypt
 - JWT
+- GraphQL
+- Class Validator
 
 ## Installation
 
@@ -42,22 +20,126 @@ $ yarn install
 ## Running the app
 
 ```bash
-# watch mode
+# development watch mode
 $ yarn start:dev
 
 # production mode
 $ yarn start:prod
 ```
 
-## Support
+## Resolvers
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+SIGNIN - Resolver (GraphQl Query)
 
-## Stay in touch
+```bash
+# For 1 day login access
+query {
+  signin(
+    signin: {
+      email: valid email address thats been registered
+      password: correct password
+      isRemembered: 1
+    }
+  ) {
+    accessToken
+    timeout
+  }
+}
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# For 1 hour login access
+query {
+  signin(
+    signin: {
+      email: valid email address thats been registered
+      password: correct password
+      isRemembered: 0
+    }
+  ) {
+    accessToken
+    timeout
+  }
+}
+
+# signin ok response
+{
+  "data": {
+    "signin": {
+      "accessToken": one unique generated token containing user email address as payload,
+      "timeout": access timeout in utc
+    }
+  }
+}
+
+# signup error response
+{
+  "errors": [
+    {
+      "message": any string,
+      "locations": array of {line: number, column: number},
+      "path": array of string
+      "extensions": any error as object
+  ],
+  "data": any
+}
+```
+
+SIGNUP - Resolver (GraphQl Mutation)
+
+```bash
+# signup request
+mutation {
+  signup(
+    signup: {
+      email: valid email address thats never been registered before
+      password: any password
+    }
+  ) {
+    id
+    email
+  }
+}
+
+# signup ok response
+{
+  "data": {
+    "signup": {
+      "id": "61167993150a3881ad5e8e51",
+      "email": "rifat@gmail.com"
+    }
+  }
+}
+
+# signup error response
+{
+  "errors": [
+    {
+      "message": any string,
+      "locations": array of {line: number, column: number},
+      "path": array of string
+      "extensions": any error as object
+  ],
+  "data": any
+}
+```
+
+## Screenshots
+- Sign In Success
+![sigin-success](./docs/signin-success.png?raw=true "Sign In Success")
+  
+- Sign In (User not found)
+![sigin-user-not-found](./docs/signin-user-not-found.png?raw=true "Sign In User Not Found")
+  
+- Sign In (Wrong Password)
+![sigin-wrong-password](./docs/sigin-wrong-password.png?raw=true "Sign In Wrong Password")
+  
+- Sign Up Success
+  ![sigup-success](./docs/signup-success.png?raw=true "Sign Up Success")
+  
+- Sign Up (Wrong Email)
+  ![signup-wrong-email](./docs/signup-wrong-email.png?raw=true "Sign Up Wrong Email")
+  
+- Sign Up (Email Available)
+  ![signup-email-available](./docs/signup-email-available.png?raw=true "Sign Up Email Already Available")
 
 ## License
 

@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const logger = new Logger('Take Home Api - Bootstrap');
@@ -12,7 +12,7 @@ async function bootstrap() {
 
   //enabling cors
   app.enableCors();
-
+  app.useGlobalPipes(new ValidationPipe());
   // getting app port from env
   const appPort = configService.get<number>('APP_PORT');
   await app.listen(appPort);
